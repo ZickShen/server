@@ -11,11 +11,14 @@ require (
 	github.com/coreos/bbolt v1.3.3
 	github.com/dchest/siphash v1.2.1 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
+	github.com/golang/protobuf v1.3.4 // indirect
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.5.0+incompatible
 	github.com/katzenpost/authority v0.0.9-0.20190907184439-988189a151b2
 	github.com/katzenpost/chacha20 v0.0.0-20190910113340-7ce890d6a556 // indirect
 	github.com/katzenpost/core v0.0.8-0.20191102182224-0c2d40bb92ac
+	github.com/katzenpost/memspool v0.0.1 // indirect
+	github.com/katzenpost/panda v0.0.3 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/pkg/errors v0.8.1 // indirect
