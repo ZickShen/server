@@ -17,6 +17,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io"
@@ -36,6 +37,7 @@ var log = logging.MustGetLogger("echo")
 var logFormat = logging.MustStringFormatter(
 	"%{level:.4s} %{id:03x} %{message}",
 )
+var dataDir string
 
 func stringToLogLevel(level string) (logging.Level, error) {
 	switch level {
@@ -92,8 +94,21 @@ func requestHandler(response http.ResponseWriter, req *http.Request) {
 
 	// send length prefixed CBOR response
 	reply := cborplugin.Response{
-		Payload: []byte(`this is test echo file`),
+		Payload: []byte(`vote recieved`),
 	}
+
+	f, err := os.OpenFile(path.Join(dataDir, "votes"),
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Error(err)
+		panic(err)
+	}
+	request.Payload = bytes.Trim(request.Payload, "\x00")
+	if _, err := f.WriteString(string(request.Payload[4:]) + "\n"); err != nil {
+		log.Error(err)
+		panic(err)
+	}
+	f.Close()
 	var serialized []byte
 	enc := codec.NewEncoderBytes(&serialized, cborHandle)
 	if err := enc.Encode(reply); err != nil {
@@ -114,6 +129,7 @@ func main() {
 	var logDir string
 	flag.StringVar(&logDir, "log_dir", "", "logging directory")
 	flag.StringVar(&logLevel, "log_level", "DEBUG", "logging level could be set to: DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL")
+	flag.StringVar(&dataDir, "data_dir", "", "data store directory")
 	flag.Parse()
 
 	level, err := stringToLogLevel(logLevel)
