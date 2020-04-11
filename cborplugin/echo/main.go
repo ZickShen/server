@@ -104,7 +104,7 @@ func requestHandler(response http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 	request.Payload = bytes.Trim(request.Payload, "\x00")
-	if _, err := f.WriteString(string(request.Payload[4:]) + "\n"); err != nil {
+	if _, err := f.WriteString(string(request.Payload[2:]) + "\n"); err != nil {
 		log.Error(err)
 		panic(err)
 	}
